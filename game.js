@@ -19,6 +19,28 @@ const keys = [];
 const player1Image = new Image();
 player1Image.src = "./spaceship2.png";
 
+let lasers = [];
+
+class Laser {
+    constructor() {
+        this.x = 0;
+        this.y = 0;
+        this.width = 2;
+        this.height = 10;
+        this.color = "red";
+        this.speed = 20;
+        this.active = false;
+    }
+    draw() {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        this.y -= this.speed;
+        if (this.y < 0) {
+            this.active = false;
+        }
+    }
+}
+
 const laser = {
     x: 0,
     y: 0,
@@ -90,9 +112,10 @@ const player1 = {
 
     },
     fireLaser: function(){
+        lasers.push(new Laser())
         laser.active = true;
         laser.x = player1.x + player1.width/2;
-        laser.y = player1.y;
+        laser.y = player1.y+4;
     }
 }
 
@@ -130,17 +153,21 @@ const generateEnemies = (numberOfEnemies) => {
 const updateGameArea = () => {
     ctx.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
     ctx.drawImage(background,0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
-    player1.draw();
     laser.draw();
+    player1.draw();
+    // lasers.forEach(laser => {
+    //     laser.draw();
+    // });
+    // lasers = lasers.filter((object) => object.active);
     enemiesArray.forEach(enemy => {
         enemy.draw();
         if (laser.active && laser.x < enemy.x + enemy.width && laser.x + laser.width > enemy.x && laser.y < enemy.y + enemy.height && laser.y + laser.height > enemy.y){
             enemiesArray.splice(enemiesArray.indexOf(enemy), 1);
             laser.active = false;
         }
-        if (player1.x < enemy.x + enemy.width && player1.x + player1.width > enemy.x && player1.y < enemy.y + enemy.height && player1.y + player1.height > enemy.y){
-            alert("Game over!");
-        }
+        // if (player1.x < enemy.x + enemy.width && player1.x + player1.width > enemy.x && player1.y < enemy.y + enemy.height && player1.y + player1.height > enemy.y){
+        //     alert("Game over!");
+        // }
     });
     requestAnimationFrame(updateGameArea);
 }
