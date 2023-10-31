@@ -4,6 +4,9 @@ const CANVAS_WIDTH = 900;
 const CANVAS_HEIGHT = 600;
 const background = new Image();
 background.src = "./space.jpeg";
+const startButton = document.getElementById("startButton");
+const resetButton = document.getElementById("resetButton");
+
 const getRandomX = () => {
     return Math.floor(Math.random() * CANVAS_WIDTH-30);
 }
@@ -126,7 +129,6 @@ const generateEnemies = (numberOfEnemies) => {
 
 const updateGameArea = () => {
     ctx.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
-    ctx.fillStyle = "#87ceeb";
     ctx.drawImage(background,0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
     player1.draw();
     laser.draw();
@@ -143,10 +145,6 @@ const updateGameArea = () => {
     requestAnimationFrame(updateGameArea);
 }
 
-generateEnemies(5);
-updateGameArea();
-
-
 
 document.addEventListener("keydown", (e) => {
     keys[e.key] = true;
@@ -154,4 +152,17 @@ document.addEventListener("keydown", (e) => {
 
 document.addEventListener("keyup", (e) => {
     delete keys[e.key];
+});
+
+startButton.addEventListener("click", () => {
+    generateEnemies(5);
+});
+
+resetButton.addEventListener("click", () => {
+    enemiesArray = [];
+    updateGameArea();
+});
+
+window.addEventListener("load", () => {
+    updateGameArea();
 })
