@@ -6,7 +6,7 @@ export default class Laser {
     this.height = 10;
     this.color = "red";
     this.speed = 20;
-    this.active = false;
+    this.active = true;
   }
   update() {
     if (this.active) {
@@ -16,10 +16,10 @@ export default class Laser {
       }
     }
   }
-  draw() {
+  draw(x,y, ctx) {
     if (this.active) {
       ctx.fillStyle = this.color;
-      ctx.fillRect(this.x, this.y, this.width, this.height);
+      ctx.fillRect(x, y, this.width, this.height);
     }
   }
 }
